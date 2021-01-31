@@ -257,6 +257,7 @@ function getAllPostStats(posts) {
                     } else {
                         read_today.innerHTML = 0;
                     }
+
                 }
 
             });
