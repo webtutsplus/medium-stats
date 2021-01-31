@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="popup.css">
+        <link rel="stylesheet" href="../libs/odometer-theme-minimal.css">
+        <script src="../libs/loggly.js"></script>
+        <script defer src="../libs/fontawesome-all.min.js"></script>
+    </head>
+    <body>
+        <section>
+            <h1>
+                <img src="logo.png" alt="Medium Enhanced Stats">
+                Enhanced Stats
+                <span class="welcome">
+                    <span class="user-details">
+                        <span class="user"></span><br>
+                        <span class="followers"><span class="user-followers"></span> followers</span>
+                    </span>
+                    <img class="user-avatar" />
+                    <svg class="user-membership" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M3.44615311,11.6601601 C6.57294867,5.47967718 12.9131553,1.5 19.9642857,1.5 C27.0154162,1.5 33.3556228,5.47967718 36.4824183,11.6601601 L37.3747245,11.2087295 C34.0793076,4.69494641 27.3961457,0.5 19.9642857,0.5 C12.5324257,0.5 5.84926381,4.69494641 2.55384689,11.2087295 L3.44615311,11.6601601 Z"></path><path d="M36.4824183,28.2564276 C33.3556228,34.4369105 27.0154162,38.4165876 19.9642857,38.4165876 C12.9131553,38.4165876 6.57294867,34.4369105 3.44615311,28.2564276 L2.55384689,28.7078582 C5.84926381,35.2216412 12.5324257,39.4165876 19.9642857,39.4165876 C27.3961457,39.4165876 34.0793076,35.2216412 37.3747245,28.7078582 L36.4824183,28.2564276 Z"></path></svg>
+
+                    <div class="user-selector">
+
+                    </div>
+                </span>
+            </h1>
+            <div class="actions">
+                <div class="side-actions">
+                    <button class="open-stats" title="Open Medium stats">
+                        <i class="fas fa-external-link-alt"></i>
+                    </button>
+                    <button class="outline refresh-stats" title="Refresh stats">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <svg viewbox="0 0 36 36" class="chart">
+                    <path class="circle-bg"
+                          d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <path class="circle progress"
+                          stroke-dasharray="100, 100"
+                          d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                    /><path class="circle spinner"
+                          stroke-dasharray="100, 100"
+                          d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <text x="18" y="13.25" class="chart-label label">TOTAL REACH</text>
+                    <text x="18" y="19" class="chart-label reach"></text>
+                    <text x="18" y="24" class="chart-label label">NEXT MILESTONE</text>
+                    <text x="18" y="27.5" class="chart-label milestone"></text>
+                </svg>
+                <div class="side-actions side-actions-right">
+                    <button class="screenshot-stats" title="Download as an image">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                    <button class="outline export-stats" title="Export stats as csv">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+                <div class="confetti"></div>
+                <div class="milestone-reached-value">
+                    <span class="value odometer">0</span>
+                    <span class="unit"></span><br>
+                    <span class="description">MILESTONE REACHED</span>
+                </div>
+                <div class="info">
+                    <i class="fas fa-question-circle fa-lg"></i>
+                    <div class="description">
+                        You are currently at <span class="nowrap"><span class="milestone-current highlight"></span> / <span class="milestone-diff"></span></span>
+                        which is <span class="milestone-progress highlight"></span>
+                        to reach your next milestone <span class="milestone-next highlight"></span> views
+                        from previous milestone which was <span class="milestone-prev"></span> views
+                    </div>
+                </div>
+            </div>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Count</th>
+                    <th>Views</th>
+                    <th>Reads</th>
+                    <th title="Weighted average read ratio">Ratio</th>
+                    <th>Fans</th>
+                    <th>Claps</th>
+                    <th title="Claps per Fan">C/F</th>
+                </tr>
+                <tr class="articles">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="responses">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </section>
+        <footer>
+            <a class="support"
+               href="https://chrome.google.com/webstore/detail/medium-enhanced-stats/jnomnfoenpdinfkpaaigokicgcfkomjo/support"
+               target="_blank">
+                Support
+            </a>
+            &copy; <span class="year"></span>
+            <a href="https://www.twitter.com/@tomastrajan" target="_blank">
+                <img src="twitter.png" alt="Twitter"> @tomastrajan
+            </a>
+            <a href="https://www.buymeacoffee.com/tomastrajan" target="_blank" title="Buy me a Coffee">
+                &#9749;
+            </a>
+            <span class="version"></span>
+        </footer>
+    </body>
+    <script src="popup.js"></script>
+    <script src="../libs/confetti.js"></script>
+    <script src="../libs/odometer.min.js"></script>
+    <script src="../libs/html2canvas.min.js"></script>
+</html>
