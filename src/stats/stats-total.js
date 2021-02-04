@@ -356,10 +356,6 @@ function updateTableRows(data) {
         read_today_heading.classList.add("sortableTable-header");
         read_today_heading.innerHTML = `<button class="button button--chromeless u-baseColor--buttonNormal js-views" data-action="sort-table" data-action-value="read_today<" data-label="Sort by">Read Today</button><span class="svgIcon svgIcon--sortAscending svgIcon--19px"><svg class="svgIcon-use" width="19" height="19"><path d="M5.4 11L4 9.667l5.517-6.11L15 9.597 13.6 11 9.5 6.8 5.4 11z"></path><path d="M8.5 15.4h2v-9h-2z" fill-rule="evenodd"></path></svg></span><span class="svgIcon svgIcon--sortDescending svgIcon--19px"><svg class="svgIcon-use" width="19" height="19"><path d="M5.4 8.4L4 9.733l5.517 6.11L15 9.803 13.6 8.4l-4.1 4.2-4.1-4.2z"></path><path d="M8.5 4h2v9h-2z" fill-rule="evenodd"></path></svg></span>`;
         table_head.appendChild(read_today_heading);
-        /*
-        <th class="sortableTable-header"><button class="button button--chromeless u-baseColor--buttonNormal js-views" data-action="sort-table" data-action-value="views" data-label="Sort by">Views</button><span class="svgIcon svgIcon--sortAscending svgIcon--19px"><svg class="svgIcon-use" width="19" height="19"><path d="M5.4 11L4 9.667l5.517-6.11L15 9.597 13.6 11 9.5 6.8 5.4 11z"></path><path d="M8.5 15.4h2v-9h-2z" fill-rule="evenodd"></path></svg></span><span class="svgIcon svgIcon--sortDescending svgIcon--19px"><svg class="svgIcon-use" width="19" height="19"><path d="M5.4 8.4L4 9.733l5.517 6.11L15 9.803 13.6 8.4l-4.1 4.2-4.1-4.2z"></path><path d="M8.5 4h2v9h-2z" fill-rule="evenodd"></path></svg></span></th>
-         */
-
     }
 
 }
