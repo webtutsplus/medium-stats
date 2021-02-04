@@ -234,7 +234,8 @@ function getAllPostStats(posts) {
             .forEach(row => {
                 const postId = row.getAttribute('data-action-value');
                 const post = posts.find(post => post.postId === postId);
-                const fansCell = row.querySelector('td:last-child .sortableTable-number');
+                console.log("post", post);
+                const fansCell = row.querySelector('td:nth-child(5) .sortableTable-number');
                 let claps = fansCell.querySelector('.claps');
                 if (!claps) {
                     claps = document.createElement('span');
@@ -248,15 +249,32 @@ function getAllPostStats(posts) {
                     read_today.className = 'read_today';
                     fansCell.appendChild(read_today);
                 }
+                let new_cell = row.querySelector('.new_cell');
+                if (!new_cell) {
+                    let x = row.insertCell(-1);
+                    let read_today_number = post.read_today;
+                    console.log("read_today_number", read_today_number, Object.keys(read_today_number));
+                    const date_today = new Date();
+                    const key = `${date_today.getFullYear()}-${date_today.getMonth()}-${date_today.getDate()}`;
+                    if (post.read_today.hasOwnProperty(key)) {
+                        read_today_number = read_today_number[key].views_today_new;
+                    } else {
+                        read_today_number = 0;
+                    }
+
+                    x.innerHTML = `<span class="sortableTable-value">${read_today_number}</span><span class="sortableTable-number" title="${read_today_number}">${read_today_number}</span>`;
+                     x.className = "new_cell";
+                }
+
 
                 if (post) {
-                    console.log("post stat read ", post);
-                    let obj = post.read_today['2021-0-31'];
-                    if (obj) {
-                        read_today.innerHTML = obj.views;
-                    } else {
-                        read_today.innerHTML = 0;
-                    }
+                    // console.log("post stat read ", post);
+                    // let obj = post.read_today['2021-0-31'];
+                    // if (obj) {
+                    //     read_today.innerHTML = obj.views;
+                    // } else {
+                    //     read_today.innerHTML = 0;
+                    // }
 
                 }
 
@@ -273,7 +291,7 @@ function updateTableRows(data) {
     .forEach(row => {
       const postId = row.getAttribute('data-action-value');
       const post = data.posts.find(post => post.postId === postId);
-      const fansCell = row.querySelector('td:last-child .sortableTable-number');
+      const fansCell = row.querySelector('td:nth-child(5) .sortableTable-number');
       const articleTitle = row.querySelector('.sortableTable-title');
       articleTitle.title = (new Date(post.firstPublishedAt)).toLocaleDateString();
       let claps = fansCell.querySelector('.claps');
@@ -306,6 +324,7 @@ function updateTableRows(data) {
              .resolve()
              .then(() => barChartPostsStats[postId] || loadPostStats(postId))
              .then(postStats => {
+                 console.log("is coming here", postStats);
                barChartPostsStats[postId] = postStats;
                const dateId = Object.keys(postStats)[0];
                let dateIds = getDateIds();
@@ -337,7 +356,7 @@ function updateTableRows(data) {
          postTitleCellActions.appendChild(showPostChartInAction);
       }
     });
-  const fansHeadCell = document.querySelector('table thead th:last-child button');
+  const fansHeadCell = document.querySelector('table thead th:nth-child(5) button');
   fansHeadCell.innerHTML = `Fans <span class="claps">Claps </span> <span class="read-today"> Read Today</span>`;
   fansHeadCell.title = 'Fans, Claps and Claps per Fan'
 }

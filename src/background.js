@@ -253,17 +253,35 @@ function calculateTotals(data) {
   return totals;
 }
 
+function isDateToday(date) {
+  const date_today = new Date();
+  if (date.getFullYear() != date_today.getFullYear()){
+    return false;
+  }
+  if (date.getMonth() != date_today.getMonth()){
+    return false;
+  }
+  if (date.getDate() != date_today.getDate()){
+    return false;
+  }
+  return true;
+}
+
 function calculatePostStats(data) {
   const stats = (data && data.value) || [];
+  console.log("most important stat**********", stats);
   return stats.reduce((result, item) => {
     const date = new Date(item.collectedAt);
     const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    result[key] = result[key] || { views: 0, reads: 0, fans: 0, claps: 0 };
+    result[key] = result[key] || { views: 0, reads: 0, fans: 0, claps: 0, read_today_new: 0, views_today_new: 0 };
     result[key].views += item.views;
     result[key].reads += item.reads;
     result[key].fans += item.upvotes;
     result[key].claps += item.claps;
-    result[key].read_today = 100;
+    if (isDateToday(date)) {
+      result[key].read_today_new += item.reads;
+      result[key].views_today_new += item.views;
+    }
     return result;
   }, {});
 }
