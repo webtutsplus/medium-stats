@@ -255,15 +255,8 @@ function getAllPostStats(posts) {
                 let new_cell = row.querySelector('.new_cell');
                 if (!new_cell) {
                     let x = row.insertCell(-1);
-                    let read_today_number = post.read_today;
-                    console.log("read_today_number", read_today_number, Object.keys(read_today_number));
-                    const date_today = new Date();
-                    const key = `${date_today.getFullYear()}-${date_today.getMonth()}-${date_today.getDate()}`;
-                    if (post.read_today.hasOwnProperty(key)) {
-                        read_today_number = read_today_number[key].views_today_new;
-                    } else {
-                        read_today_number = 0;
-                    }
+                    let read_today_number = process_reads_today(post);
+
 
                     x.innerHTML = `<span class="sortableTable-value">${read_today_number}</span><span class="sortableTable-number" title="${read_today_number}">${read_today_number}</span>`;
                      x.className = "new_cell";
@@ -416,7 +409,18 @@ function generateDateIds() {
 function log(...args) {
   console.log('Medium Enhanced Stats [stats] -', ...args);
 }
-
+function process_reads_today(post){
+  let read_today_number = post.read_today;
+  console.log("read_today_number", read_today_number, Object.keys(read_today_number));
+  const date_today = new Date();
+  const key = `${date_today.getFullYear()}-${date_today.getMonth()}-${date_today.getDate()}`;
+  if (post.read_today.hasOwnProperty(key)) {
+      read_today_number = read_today_number[key].views_today_new;
+  } else {
+      read_today_number = 0;
+  }
+  return read_today_number;
+}
 
 
 async function tempCount(posts) {
@@ -428,7 +432,6 @@ async function tempCount(posts) {
   await Promise.all(promiseArr).then((result)=>{
      for(let i = 0; i < result.length; i++) {
          posts[i].read_today = result[i];
-      //   posts[i].read_today_number = processForToday(posts[i].read_today)
      }
       const rows = document.querySelectorAll('table tbody tr');
       Array.from(rows)
@@ -446,16 +449,7 @@ async function tempCount(posts) {
               }
               let new_cell = row.querySelector('.new_cell');
               if (!new_cell) {
-                  // let x = row.insertCell(-1);
-                  let read_today_number = post.read_today;
-                  console.log("read_today_number", read_today_number, Object.keys(read_today_number));
-                  const date_today = new Date();
-                  const key = `${date_today.getFullYear()}-${date_today.getMonth()}-${date_today.getDate()}`;
-                  if (post.read_today.hasOwnProperty(key)) {
-                      read_today_number = read_today_number[key].views_today_new;
-                  } else {
-                      read_today_number = 0;
-                  }
+                  let read_today_number =  process_reads_today(post)
                   count += read_today_number
             
               }
