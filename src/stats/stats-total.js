@@ -4,6 +4,7 @@ loggly.push({
   sendConsoleErrors: true,
   tag: 'mes-stats'
 });
+let count = 0;
 
 log('start');
 
@@ -185,7 +186,7 @@ function updateBarChart(data) {
     });
 }
 
-function updateTableSummary(data) {
+async function updateTableSummary(data) {
   const { items, views, syndicatedViews, reads, fans, claps, clapsPerFan, clapsPerViewsRatio, fansPerReadsRatio, ratio } = data;
   log('update table summary');
   const table = document.querySelector('table');
@@ -194,6 +195,8 @@ function updateTableSummary(data) {
     tfoot = document.createElement('tfoot');
     table.appendChild(tfoot);
   }
+  let todayCount = await tempCount(data.posts)
+
   tfoot.innerHTML = `
       <tr>
         <td title="Items count" class="articles-count">${formatValue(items)}</td>
@@ -212,7 +215,7 @@ function updateTableSummary(data) {
                 <span class="fans-per-reads-ratio" title="Fans per Reads Ratio">${fansPerReadsRatio}%</span>
             </span>
         </td>
-        <td title="Read Today">100</td>
+        <td title="Read Today">${formatValue(todayCount)}</td>
       </tr>
     `;
 }
@@ -413,3 +416,53 @@ function generateDateIds() {
 function log(...args) {
   console.log('Medium Enhanced Stats [stats] -', ...args);
 }
+
+
+
+async function tempCount(posts) {
+  let promiseArr = [];
+  posts.forEach((post) => {
+      promiseArr.push(loadPostStatsToday(post.postId));
+      //promiseArr.push(loadPostStats(post.postId));
+  });
+  await Promise.all(promiseArr).then((result)=>{
+     for(let i = 0; i < result.length; i++) {
+         posts[i].read_today = result[i];
+      //   posts[i].read_today_number = processForToday(posts[i].read_today)
+     }
+      const rows = document.querySelectorAll('table tbody tr');
+      Array.from(rows)
+          .filter(row => row.getAttribute('data-action-value'))
+          .forEach(row => {
+              const postId = row.getAttribute('data-action-value');
+              const post = posts.find(post => post.postId === postId);
+              console.log("post", post);
+              const fansCell = row.querySelector('td:nth-child(5) .sortableTable-number');
+              let read_today = fansCell.querySelector('.read_today');
+              if(!read_today){
+                  read_today = document.createElement('span');
+                  read_today.className = 'read_today';
+                  fansCell.appendChild(read_today);
+              }
+              let new_cell = row.querySelector('.new_cell');
+              if (!new_cell) {
+                  // let x = row.insertCell(-1);
+                  let read_today_number = post.read_today;
+                  console.log("read_today_number", read_today_number, Object.keys(read_today_number));
+                  const date_today = new Date();
+                  const key = `${date_today.getFullYear()}-${date_today.getMonth()}-${date_today.getDate()}`;
+                  if (post.read_today.hasOwnProperty(key)) {
+                      read_today_number = read_today_number[key].views_today_new;
+                  } else {
+                      read_today_number = 0;
+                  }
+                  count += read_today_number
+            
+              }
+
+          });
+  });
+  return count;
+}
+
+
