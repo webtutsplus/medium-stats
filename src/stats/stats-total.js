@@ -231,10 +231,10 @@ function getAllPostStats(posts) {
        for(let i = 0; i < result.length; i++) {
            posts[i].view_today = result[i];
            posts[i].read_today = result[i]
-           posts[i].view_today_number = process_views_today(posts[i]);
-           posts[i].read_today_number = process_read_today(posts[i])
-           view_today_count += posts[i].view_today_number
-           read_today_count += posts[i].read_today_number
+           posts[i].total_views_today = process_views_today(posts[i]);
+           posts[i].total_reads_today = process_read_today(posts[i])
+           view_today_count += posts[i].total_views_today
+           read_today_count += posts[i].total_reads_today
        }
 
        let set_read_today_count = document.querySelector("#read_today_count")
@@ -248,7 +248,6 @@ function getAllPostStats(posts) {
             .forEach(row => {
                 const postId = row.getAttribute('data-action-value');
                 const post = posts.find(post => post.postId === postId);
-                console.log("post", post);
                 const fansCell = row.querySelector('td:nth-child(5) .sortableTable-number');
                 let claps = fansCell.querySelector('.claps');
                 if (!claps) {
@@ -263,14 +262,14 @@ function getAllPostStats(posts) {
                     read_today.className = 'read_today';
                     fansCell.appendChild(read_today);
                 }
-                let new_cell = row.querySelector('.new_cell');
-                if (!new_cell) {
-                    let x = row.insertCell(-1);
+                let read_today_cell = row.querySelector('.read_today_cell');
+                if (!read_today_cell) {
+                    read_today_cell = row.insertCell(-1);
                     let view_today_number = process_views_today(post);
                     let read_today_number = process_read_today(post);
 
-                    x.innerHTML = `<span class="sortableTable-value">${view_today_number}</span><span class="sortableTable-number" title="${view_today_number}">${view_today_number + "(" +read_today_number  +  ")"}</span>`;
-                     x.className = "new_cell";
+                    read_today_cell.innerHTML = `<span class="sortableTable-value">${view_today_number}</span><span class="sortableTable-number" title="${view_today_number}">${view_today_number + "(" +read_today_number  +  ")"}</span>`;
+                    read_today_cell.className = "read_today_cell";
                 }
 
             });
