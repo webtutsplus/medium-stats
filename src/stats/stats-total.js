@@ -186,7 +186,7 @@ function updateBarChart(data) {
     });
 }
 
-async function updateTableSummary(data) {
+function updateTableSummary(data) {
   const { items, views, syndicatedViews, reads, fans, claps, clapsPerFan, clapsPerViewsRatio, fansPerReadsRatio, ratio } = data;
   log('update table summary');
   const table = document.querySelector('table');
@@ -214,11 +214,12 @@ async function updateTableSummary(data) {
                 <span class="fans-per-reads-ratio" title="Fans per Reads Ratio">${fansPerReadsRatio}%</span>
             </span>
         </td>
-        <td id="read_today_count" title="Read Today">${formatValue(countPost)}</td>
+        <td id="read_today_count" title="Views Today(Reads)">${formatValue(view_today_count)}</td>
       </tr>
     `;
 }
-let countPost = 0;
+let view_today_count = 0;
+let read_today_count = 0;
 function getAllPostStats(posts) {
     let promiseArr = [];
     posts.forEach((post) => {
@@ -228,14 +229,18 @@ function getAllPostStats(posts) {
     Promise.all(promiseArr).then((result)=>{
        console.log("all post today stats neel", result);
        for(let i = 0; i < result.length; i++) {
-           posts[i].read_today = result[i];
-           posts[i].read_today_number = process_reads_today(posts[i]);
-           countPost+= posts[i].read_today_number
+           posts[i].view_today = result[i];
+           posts[i].read_today = result[i]
+           posts[i].view_today_number = process_views_today(posts[i]);
+           posts[i].read_today_number = process_read_today(posts[i])
+           view_today_count += posts[i].view_today_number
+           read_today_count += posts[i].read_today_number
        }
 
-       var read_today_count = document.querySelector("#read_today_count")
-       read_today_count.textContent = countPost;
-       countPost = 0;
+       let set_read_today_count = document.querySelector("#read_today_count")
+       set_read_today_count.textContent = view_today_count + "(" + read_today_count + ") ";
+       read_today_count = 0;
+       view_today_count = 0;
 
         const rows = document.querySelectorAll('table tbody tr');
         Array.from(rows)
@@ -261,10 +266,10 @@ function getAllPostStats(posts) {
                 let new_cell = row.querySelector('.new_cell');
                 if (!new_cell) {
                     let x = row.insertCell(-1);
-                    let read_today_number = process_reads_today(post);
+                    let view_today_number = process_views_today(post);
+                    let read_today_number = process_read_today(post);
 
-
-                    x.innerHTML = `<span class="sortableTable-value">${read_today_number}</span><span class="sortableTable-number" title="${read_today_number}">${read_today_number}</span>`;
+                    x.innerHTML = `<span class="sortableTable-value">${view_today_number}</span><span class="sortableTable-number" title="${view_today_number}">${view_today_number + "(" +read_today_number  +  ")"}</span>`;
                      x.className = "new_cell";
                 }
 
@@ -356,7 +361,7 @@ function updateTableRows(data) {
         read_today_heading = document.createElement('th');
         read_today_heading.className = 'read_today_heading';
         read_today_heading.classList.add("sortableTable-header");
-        read_today_heading.innerHTML = `<button class="button button--chromeless u-baseColor--buttonNormal js-views" data-action="sort-table" data-action-value="read_today<" data-label="Sort by">Read Today</button><span class="svgIcon svgIcon--sortAscending svgIcon--19px"><svg class="svgIcon-use" width="19" height="19"><path d="M5.4 11L4 9.667l5.517-6.11L15 9.597 13.6 11 9.5 6.8 5.4 11z"></path><path d="M8.5 15.4h2v-9h-2z" fill-rule="evenodd"></path></svg></span><span class="svgIcon svgIcon--sortDescending svgIcon--19px"><svg class="svgIcon-use" width="19" height="19"><path d="M5.4 8.4L4 9.733l5.517 6.11L15 9.803 13.6 8.4l-4.1 4.2-4.1-4.2z"></path><path d="M8.5 4h2v9h-2z" fill-rule="evenodd"></path></svg></span>`;
+        read_today_heading.innerHTML = `<button class="button button--chromeless u-baseColor--buttonNormal js-views" data-action="sort-table" data-action-value="read_today<" data-label="Sort by">Views Today(Read)</button><span class="svgIcon svgIcon--sortAscending svgIcon--19px"><svg class="svgIcon-use" width="19" height="19"><path d="M5.4 11L4 9.667l5.517-6.11L15 9.597 13.6 11 9.5 6.8 5.4 11z"></path><path d="M8.5 15.4h2v-9h-2z" fill-rule="evenodd"></path></svg></span><span class="svgIcon svgIcon--sortDescending svgIcon--19px"><svg class="svgIcon-use" width="19" height="19"><path d="M5.4 8.4L4 9.733l5.517 6.11L15 9.803 13.6 8.4l-4.1 4.2-4.1-4.2z"></path><path d="M8.5 4h2v9h-2z" fill-rule="evenodd"></path></svg></span>`;
         table_head.appendChild(read_today_heading);
     }
 
@@ -415,13 +420,25 @@ function generateDateIds() {
 function log(...args) {
   console.log('Medium Enhanced Stats [stats] -', ...args);
 }
-function process_reads_today(post){
+function process_views_today(post){
+  let views_today_number = post.view_today;
+//  console.log("read_today_number", read_today_number, Object.keys(read_today_number));
+  const date_today = new Date();
+  const key = `${date_today.getFullYear()}-${date_today.getMonth()}-${date_today.getDate()}`;
+  if (post.view_today.hasOwnProperty(key)) {
+      views_today_number = views_today_number[key].view_today;
+  } else {
+      views_today_number = 0;
+  }
+  return views_today_number;
+}
+function process_read_today(post){
   let read_today_number = post.read_today;
-  console.log("read_today_number", read_today_number, Object.keys(read_today_number));
+//  console.log("read_today_number", read_today_number, Object.keys(read_today_number));
   const date_today = new Date();
   const key = `${date_today.getFullYear()}-${date_today.getMonth()}-${date_today.getDate()}`;
   if (post.read_today.hasOwnProperty(key)) {
-      read_today_number = read_today_number[key].views_today_new;
+      read_today_number = read_today_number[key].read_today;
   } else {
       read_today_number = 0;
   }
