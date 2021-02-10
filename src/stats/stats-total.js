@@ -431,6 +431,7 @@ function process_views_today(post){
       views_today_number = 0;
   }
   return views_today_number;
+
 }
 function process_read_today(post){
   let read_today_number = post.read_today;
