@@ -213,7 +213,8 @@ function updateTableSummary(data) {
                 <span class="fans-per-reads-ratio" title="Fans per Reads Ratio">${fansPerReadsRatio}%</span>
             </span>
         </td>
-        <td id="today_count" title="Views Today(Reads)">${formatValue(total_views_today)}</td>
+        <td id="today_count" style="text-align:left" title="Views Today(Reads)">${formatValue(total_views_today)}</td>
+        
       </tr>
     `;
 }
@@ -262,11 +263,13 @@ function getAllPostStats(posts) {
                 }
                 let today_cell = row.querySelector('.today_cell');
                 if (!today_cell) {
-                  today_cell = row.insertCell(-1);
+                    today_cell = row.insertCell(-1);
                     let view_today_number = process_views_today(post);
                     let read_today_number = process_read_today(post);
 
-                    today_cell.innerHTML = `<span class="sortableTable-value">${view_today_number}</span><span class="sortableTable-number" title="${view_today_number}">${view_today_number + "(" +read_today_number  +  ")"}</span>`;
+        
+                    today_cell.innerHTML = `<span class="sortableTable-value">${view_today_number}</span>
+                      <span class="sortableTable-number" style="text-align: center" title="${view_today_number}">${view_today_number + "(" +read_today_number  +  ")"}</span>`;
                     today_cell.className = "today_cell";
                 }
 
