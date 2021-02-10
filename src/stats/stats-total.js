@@ -269,7 +269,8 @@ function getAllPostStats(posts) {
                     let view_today_number = process_views_today(post);
                     let read_today_number = process_read_today(post);
 
-                    x.innerHTML = `<span class="sortableTable-value">${view_today_number}</span><span class="sortableTable-number" title="${view_today_number}">${view_today_number + "(" +read_today_number  +  ")"}</span>`;
+                    x.innerHTML = `<span class="sortableTable-value">${view_today_number}</span>
+                        <span class="sortableTable-number" style="text-align: center" title="${view_today_number}">${view_today_number + "(" +read_today_number  +  ")"}</span>`;
                      x.className = "new_cell";
                 }
 
