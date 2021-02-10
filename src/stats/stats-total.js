@@ -4,7 +4,6 @@ loggly.push({
   sendConsoleErrors: true,
   tag: 'mes-stats'
 });
-let count = 0;
 
 log('start');
 
@@ -214,12 +213,12 @@ function updateTableSummary(data) {
                 <span class="fans-per-reads-ratio" title="Fans per Reads Ratio">${fansPerReadsRatio}%</span>
             </span>
         </td>
-        <td id="read_today_count" title="Views Today(Reads)">${formatValue(view_today_count)}</td>
+        <td id="today_count" title="Views Today(Reads)">${formatValue(total_views_today)}</td>
       </tr>
     `;
 }
-let view_today_count = 0;
-let read_today_count = 0;
+let total_views_today  = 0;
+let total_reads_today = 0;
 function getAllPostStats(posts) {
     let promiseArr = [];
     posts.forEach((post) => {
@@ -227,20 +226,19 @@ function getAllPostStats(posts) {
         //promiseArr.push(loadPostStats(post.postId));
     });
     Promise.all(promiseArr).then((result)=>{
-       console.log("all post today stats neel", result);
        for(let i = 0; i < result.length; i++) {
            posts[i].view_today = result[i];
            posts[i].read_today = result[i]
            posts[i].total_views_today = process_views_today(posts[i]);
            posts[i].total_reads_today = process_read_today(posts[i])
-           view_today_count += posts[i].total_views_today
-           read_today_count += posts[i].total_reads_today
+           total_views_today += posts[i].total_views_today
+           total_reads_today += posts[i].total_reads_today
        }
 
-       let set_read_today_count = document.querySelector("#read_today_count")
-       set_read_today_count.textContent = view_today_count + "(" + read_today_count + ") ";
-       read_today_count = 0;
-       view_today_count = 0;
+       let today_count_div = document.querySelector("#today_count")
+       today_count_div.textContent = total_views_today + "(" + total_reads_today + ") ";
+       total_reads_today = 0;
+       total_views_today = 0;
 
         const rows = document.querySelectorAll('table tbody tr');
         Array.from(rows)
@@ -262,14 +260,14 @@ function getAllPostStats(posts) {
                     read_today.className = 'read_today';
                     fansCell.appendChild(read_today);
                 }
-                let read_today_cell = row.querySelector('.read_today_cell');
-                if (!read_today_cell) {
-                    read_today_cell = row.insertCell(-1);
+                let today_cell = row.querySelector('.today_cell');
+                if (!today_cell) {
+                  today_cell = row.insertCell(-1);
                     let view_today_number = process_views_today(post);
                     let read_today_number = process_read_today(post);
 
-                    read_today_cell.innerHTML = `<span class="sortableTable-value">${view_today_number}</span><span class="sortableTable-number" title="${view_today_number}">${view_today_number + "(" +read_today_number  +  ")"}</span>`;
-                    read_today_cell.className = "read_today_cell";
+                    today_cell.innerHTML = `<span class="sortableTable-value">${view_today_number}</span><span class="sortableTable-number" title="${view_today_number}">${view_today_number + "(" +read_today_number  +  ")"}</span>`;
+                    today_cell.className = "today_cell";
                 }
 
             });
@@ -277,7 +275,6 @@ function getAllPostStats(posts) {
 }
 
 function updateTableRows(data) {
-  log('update table rows neel', data.posts);
   getAllPostStats(data.posts);
   const rows = document.querySelectorAll('table tbody tr');
   Array.from(rows)
@@ -421,7 +418,6 @@ function log(...args) {
 }
 function process_views_today(post){
   let views_today_number = post.view_today;
-//  console.log("read_today_number", read_today_number, Object.keys(read_today_number));
   const date_today = new Date();
   const key = `${date_today.getFullYear()}-${date_today.getMonth()}-${date_today.getDate()}`;
   if (post.view_today.hasOwnProperty(key)) {
@@ -433,7 +429,6 @@ function process_views_today(post){
 }
 function process_read_today(post){
   let read_today_number = post.read_today;
-//  console.log("read_today_number", read_today_number, Object.keys(read_today_number));
   const date_today = new Date();
   const key = `${date_today.getFullYear()}-${date_today.getMonth()}-${date_today.getDate()}`;
   if (post.read_today.hasOwnProperty(key)) {
