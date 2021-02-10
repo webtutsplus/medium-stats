@@ -213,7 +213,7 @@ function updateTableSummary(data) {
                 <span class="fans-per-reads-ratio" title="Fans per Reads Ratio">${fansPerReadsRatio}%</span>
             </span>
         </td>
-        <td id="today_count" style="text-align:left" title="Views Today(Reads)">${formatValue(total_views_today)}</td>
+        <td id="today_count" style="text-align:center !important" title="Views Today(Reads)">${formatValue(total_views_today)}</td>
         
       </tr>
     `;
