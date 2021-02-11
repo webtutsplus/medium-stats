@@ -20,7 +20,6 @@ table .read_today {
     position: relative;
     display: inline-block;
     width: 75px;
-    margin-left: 20px;
 }
 
 table th .read_today {
@@ -163,3 +162,4 @@ tfoot td .syndicated-views {
 .mes-post-bar {
     fill: rgba(3, 159, 118, 0.9) !important;
 }
+
